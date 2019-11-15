@@ -1,0 +1,1 @@
+export const FETCH_PLATFORMS = 'FETCH_PLATFORMS';

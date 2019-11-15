@@ -1,0 +1,41 @@
+.button {
+  padding: .5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  
+  &.disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+    color: #000;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.small {
+  padding: .3rem;
+}
+
+.large {
+  padding: .8rem;
+}
+
+.success {
+  background-color: #2cff63;
+}
+
+.default {
+  background-color: #fff;
+}
+
+.warning {
+  background-color: #ff2149;
+}
+
+.primary {
+  background-color: #287cff;
+  color: #fff;
+}

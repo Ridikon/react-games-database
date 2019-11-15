@@ -1,0 +1,53 @@
+@import '../node_modules/normalize.css/normalize.css';
+
+body {
+  background: #eee;
+}
+
+aside {
+  position: fixed;
+  padding-right: 10px;
+  top: 0;
+  right: calc(100% - 10px);
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+  height: 100%;
+  z-index: 1;
+
+  &.visible {
+    background: #bfb5bc;
+    left: 0;
+  }
+}
+
+section {
+}
+
+.is-flex {
+  display: flex;
+
+  &.direction-row {
+    flex-direction: row;
+  }
+
+  &.direction-column {
+    flex-direction: column;
+  }
+
+  &.is-v-centered {
+    align-items: center;
+  }
+
+  &.is-h-centered {
+    justify-content: center;
+  }
+
+  &.is-v-end {
+    align-items: flex-end;
+  }
+
+  &.is-h-end {
+    justify-content: flex-end;
+  }
+}
