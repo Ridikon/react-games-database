@@ -1,0 +1,32 @@
+.listItem {
+  width: 33%;
+  margin: .1rem;
+  padding: 1rem;
+  border: 1px solid grey;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.image {
+  position: relative;
+  text-align: center;
+  width: 100%;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  .rating {
+    padding: .5rem;
+    border-radius: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: gold;
+    text-shadow: #000;
+    background-color: rgba(#000, .6);
+  }
+}
