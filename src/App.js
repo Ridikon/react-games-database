@@ -1,45 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import _ from 'lodash';
 
 import MainPage from './containers/MainPage';
-import { fetchGames } from './actions/gamesActions';
-import './App.scss';
 import Loader from './components/UI/Loader';
-import { changeCategoryAction } from './actions/categoryActions';
+import Title from './components/Title';
+import { fetchGames } from './actions/gamesActions';
 import { fetchPlatforms } from './actions/platformsActions';
+import { changeTitleAction } from './actions/titleActions';
+import './App.scss';
 
-function App({ loading, games = [], platforms = [], category, fetchGames, fetchPlatforms, changeCategoryAction }) {
+function App({ loading, sort, games, platforms, title, category, fetchGames, fetchPlatforms, changeTitleAction }) {
   const [categoryList, setCategoryList] = useState([]);
 
-  useEffect(() => {
-    if (category === 'games' && !games.length) {
-      fetchGames();
-    }
-
-    if (category === 'platforms' && !platforms.length) {
-      fetchPlatforms();
-    }
-  }, [platforms, category, games, fetchGames, fetchPlatforms]);
-
-  useEffect(() => {
+  const sortingByCategory = () => {
     if (category === 'games') {
-      setCategoryList(games);
+      return 'rating'
     }
 
     if (category === 'platforms') {
-      setCategoryList(platforms);
+      return 'games_count'
     }
-  }, [platforms, games, category, fetchGames, fetchPlatforms]);
-
-  const changeCategory = (category) => {
-    changeCategoryAction(category)
   };
+
+  const resetSortingByCategory = () => {
+    if (category === 'games') {
+      setCategoryList(games.results);
+    }
+
+    if (category === 'platforms') {
+      setCategoryList(platforms.results);
+    }
+  };
+
+  useEffect(() => {
+    if (category === 'games' && !games.results) {
+      fetchGames();
+    }
+
+    if (category === 'platforms' && !platforms.results) {
+      fetchPlatforms();
+    }
+  }, [platforms, category, games, title]);
+
+  useEffect(() => {
+    if (category === 'games') {
+      setCategoryList(games.results);
+      changeTitleAction('All games')
+    }
+
+    if (category === 'platforms') {
+      setCategoryList(platforms.results);
+      changeTitleAction('All platforms')
+    }
+  }, [platforms, games, category, title]);
+
+  useEffect(() => {
+    if (sort === 'asc') {
+      setCategoryList(_.sortBy(categoryList, sortingByCategory()))
+    }
+
+    if (sort === 'desc') {
+      setCategoryList(_.sortBy(categoryList, sortingByCategory()).reverse())
+    }
+
+    if (!sort) {
+      resetSortingByCategory()
+    }
+  }, [sort, category]);
 
   let routes = (
     <Switch>
       <Route path="/" exact>
-        <MainPage category={category} changeCategory={changeCategory} list={categoryList}/>
+        <MainPage category={category} list={categoryList}/>
       </Route>
       <Redirect to="/"/>
     </Switch>
@@ -47,6 +81,7 @@ function App({ loading, games = [], platforms = [], category, fetchGames, fetchP
 
   return (
     <>
+      <Title title={title}/>
       {loading ? <Loader/> : routes}
     </>
   );
@@ -57,14 +92,16 @@ const mapStateToProps = (store) => {
     loading: store.loading.loading,
     games: store.games.games,
     platforms: store.platforms.platforms,
-    category: store.category.category
+    category: store.category.category,
+    title: store.title.title,
+    sort: store.filter.sort
   }
 };
 
 const mapDispatchToProps = {
   fetchGames,
   fetchPlatforms,
-  changeCategoryAction
+  changeTitleAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

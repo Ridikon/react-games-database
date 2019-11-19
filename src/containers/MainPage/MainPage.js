@@ -13,7 +13,7 @@ const MainPage = ({ category, list, changeCategory }) => {
   return (
     <>
       <aside className={cls} onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}>
-        <Filter category={category} changeCategory={changeCategory}/>
+        <Filter />
       </aside>
 
       <section>

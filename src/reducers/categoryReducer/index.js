@@ -1,7 +1,7 @@
 import { SELECT_CATEGORY } from '../../constants/categoryConstants';
 
 let initialState = {
-  category: 'platforms'
+  category: 'games'
 };
 
 export const categoryReducer = (state = initialState, action) => {

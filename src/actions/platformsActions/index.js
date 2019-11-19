@@ -1,5 +1,5 @@
-import { loadingEnd, loadingStart } from '../loadingActions';
 import { FETCH_PLATFORMS } from '../../constants/platformsConstants';
+import { loadingEnd, loadingStart } from '../loadingActions';
 import API from '../../api';
 
 export const fetchPlatformsAction = (data) => {
@@ -14,7 +14,7 @@ export const fetchPlatforms = () => (dispatch) => {
 
   API.get('platforms').then(res => {
     dispatch(loadingEnd());
-    dispatch(fetchPlatformsAction(res.data.results))
+    dispatch(fetchPlatformsAction(res.data))
   }).catch(e => {
     dispatch(loadingEnd());
     console.log(e)

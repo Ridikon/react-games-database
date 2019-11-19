@@ -1,7 +1,7 @@
 import { FETCH_PLATFORMS } from '../../constants/platformsConstants';
 
 let initialState = {
-  platforms: []
+  platforms: {}
 };
 
 export const platformsReducer = (state = initialState, action) => {
