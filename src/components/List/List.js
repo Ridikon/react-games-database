@@ -9,8 +9,10 @@ const List = ({ list = [] }) => {
   };
 
   return (
-    <div className={classes.list}>
-      {renderList()}
+    <div>
+      <div className={classes.list}>
+        {renderList()}
+      </div>
     </div>
   );
 };

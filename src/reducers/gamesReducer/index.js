@@ -1,7 +1,7 @@
 import { FETCH_GAMES } from '../../constants/gamesConstants';
 
 let initialState = {
-  games: []
+  games: {}
 };
 
 export const gamesReducer = (state = initialState, action) => {

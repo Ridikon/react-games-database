@@ -5,15 +5,52 @@ import ElementPosition from '../../hoc/ElementPosition';
 import Button from '../UI/Button';
 
 const ListItem = ({ item }) => {
+  const renderInfo = (info) => {
+    return (
+      <div className={classes.info}>
+        {info}
+      </div>
+    )
+  };
+
+  const itemInfo = () => {
+    if ('rating' in item) {
+      return renderInfo(`Rating: ${item.rating}`);
+    }
+
+    if ('games_count' in item) {
+      return renderInfo(`Games count: ${item.games_count}`);
+    }
+
+    return null;
+  };
+
+  const itemDedcription = () => {
+    return (
+      item.released ?
+        <div>
+          <span>Released at: {item.released}</span>
+        </div> :
+        null
+    )
+  };
+
   return (
     <div className={classes.listItem}>
-      <div className={classes.image}>
-        <img src={item['background_image'] || item['image_background']} alt={item.name}/>
+      <div>
+        <div className={classes.image}>
+          <img src={item['background_image'] || item['image_background']} alt={item.name}/>
 
-        <div className={classes.rating}>Rating: {item.rating}</div>
+          {itemInfo()}
+        </div>
+
+        <div>
+          <span>{item.name}</span>
+
+          {itemDedcription()}
+        </div>
       </div>
 
-      <span>{item.name}, {item.released}</span>
 
       <ElementPosition hEnd={true}>
         <Button size="small">

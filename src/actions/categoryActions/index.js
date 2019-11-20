@@ -5,4 +5,4 @@ export const changeCategoryAction = (category) => {
     type: SELECT_CATEGORY,
     payload: category
   }
-}
+};

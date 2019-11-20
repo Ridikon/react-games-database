@@ -14,7 +14,7 @@ export const fetchGames = () => (dispatch) => {
 
   API.get('games').then(res => {
     dispatch(loadingEnd());
-    dispatch(fetchGamesAction(res.data.results))
+    dispatch(fetchGamesAction(res.data))
   }).catch(e => {
     dispatch(loadingEnd());
     console.log(e)

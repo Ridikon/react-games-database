@@ -34,7 +34,7 @@ const Select = ({label, value, onChange, options}) => {
 
 Select.defaultProps = {
   label: 'Label',
-  value: 'games',
+  value: '',
   onChange: () => null,
   options: []
 };
