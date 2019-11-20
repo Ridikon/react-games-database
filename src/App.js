@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import _ from 'lodash';
@@ -9,30 +10,35 @@ import Title from './components/Title';
 import { fetchGames } from './actions/gamesActions';
 import { fetchPlatforms } from './actions/platformsActions';
 import { changeTitleAction } from './actions/titleActions';
+import { filterResetAction } from './actions/filterActions';
 import './App.scss';
 
-function App({ loading, sort, games, platforms, title, category, fetchGames, fetchPlatforms, changeTitleAction }) {
+function App({ loading, sort, games, platforms, title, category, fetchGames, fetchPlatforms, changeTitleAction, filterReset }) {
   const [categoryList, setCategoryList] = useState([]);
 
-  const sortingByCategory = () => {
-    if (category === 'games') {
-      return 'rating'
+  const sortingByCategory = useCallback(() => {
+    switch (category) {
+      case 'games':
+        return 'rating';
+      case 'platforms':
+        return 'games_count';
+      default:
+        return ''
     }
+  }, [category]);
 
-    if (category === 'platforms') {
-      return 'games_count'
+  const resetSortingByCategory = useCallback(() => {
+    switch (category) {
+      case 'games':
+        setCategoryList(games.results);
+        break;
+      case 'platforms':
+        setCategoryList(platforms.results);
+        break;
+      default:
+        setCategoryList([])
     }
-  };
-
-  const resetSortingByCategory = () => {
-    if (category === 'games') {
-      setCategoryList(games.results);
-    }
-
-    if (category === 'platforms') {
-      setCategoryList(platforms.results);
-    }
-  };
+  }, [category, games, platforms]);
 
   useEffect(() => {
     if (category === 'games' && !games.results) {
@@ -42,33 +48,33 @@ function App({ loading, sort, games, platforms, title, category, fetchGames, fet
     if (category === 'platforms' && !platforms.results) {
       fetchPlatforms();
     }
-  }, [platforms, category, games, title]);
+  }, [category]);
 
   useEffect(() => {
-    if (category === 'games') {
-      setCategoryList(games.results);
-      changeTitleAction('All games')
-    }
+    filterReset();
 
-    if (category === 'platforms') {
-      setCategoryList(platforms.results);
-      changeTitleAction('All platforms')
+    switch (category) {
+      case 'games':
+        setCategoryList(games.results);
+        changeTitleAction('All games');
+        break;
+      case 'platforms':
+        setCategoryList(platforms.results);
+        changeTitleAction('All platforms');
+        break;
+      default:
+        setCategoryList([]);
+        changeTitleAction('No data')
     }
-  }, [platforms, games, category, title]);
+  }, [category, games, platforms]);
 
   useEffect(() => {
-    if (sort === 'asc') {
-      setCategoryList(_.sortBy(categoryList, sortingByCategory()))
-    }
-
-    if (sort === 'desc') {
-      setCategoryList(_.sortBy(categoryList, sortingByCategory()).reverse())
-    }
-
     if (!sort) {
-      resetSortingByCategory()
+      resetSortingByCategory();
+    } else {
+      setCategoryList(_.orderBy(categoryList, [sortingByCategory()], [sort]))
     }
-  }, [sort, category]);
+  }, [sort]);
 
   let routes = (
     <Switch>
@@ -101,7 +107,8 @@ const mapStateToProps = (store) => {
 const mapDispatchToProps = {
   fetchGames,
   fetchPlatforms,
-  changeTitleAction
+  changeTitleAction,
+  filterReset: filterResetAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

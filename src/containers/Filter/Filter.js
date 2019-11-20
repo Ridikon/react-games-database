@@ -1,17 +1,13 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { connect } from 'react-redux';
 
 import Select from '../../components/Form/Select';
 import { changeCategoryAction } from '../../actions/categoryActions';
 import classes from './Filter.module.scss';
-import { filterResetAction, sortingAction } from '../../actions/filterActions';
+import { sortingAction } from '../../actions/filterActions';
 import Range from '../../components/Form/Range';
 
-const Filter = ({ category, sortedAt, changeCategory, sortingAction, filterResetAction }) => {
-  useEffect(() => {
-    filterResetAction()
-  }, [category]);
-
+const Filter = ({ category, sortedAt, changeCategory, sortingAction }) => {
   const categories = [
     { text: 'Games', value: 'games' },
     { text: 'Platforms', value: 'platforms' }
@@ -46,8 +42,7 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = {
   changeCategory: changeCategoryAction,
-  sortingAction,
-  filterResetAction
+  sortingAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
