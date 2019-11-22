@@ -1,4 +1,4 @@
-import { FILTER_RESET, SORT_ASC, SORT_DESC } from '../../constants/filterConstants';
+import { FILTER_RESET, SORT_ASC, SORT_DESC, SORT_RANGE } from '../../constants/filterConstants';
 
 export const sortAscAction = () => {
   return {
@@ -15,6 +15,13 @@ export const sortDescAction = () => {
 export const filterResetAction = () => {
   return {
     type: FILTER_RESET
+  }
+};
+
+export const sortRangeAction = (value) => {
+  return {
+    type: SORT_RANGE,
+    payload: value
   }
 };
 

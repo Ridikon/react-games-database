@@ -28,7 +28,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   disabled: PropTypes.bool,
   typeColor: PropTypes.string,
   type: PropTypes.string,

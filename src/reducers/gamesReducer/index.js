@@ -1,7 +1,8 @@
-import { FETCH_GAMES } from '../../constants/gamesConstants';
+import { FETCH_GAMES, SET_GAMES_RANGE } from '../../constants/gamesConstants';
 
 let initialState = {
-  games: {}
+  games: {},
+  gamesRange: {}
 };
 
 export const gamesReducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ export const gamesReducer = (state = initialState, action) => {
       return {
         ...state,
         games: action.payload
+      };
+    case SET_GAMES_RANGE:
+      return {
+        ...state,
+        gamesRange: action.payload
       };
     default:
       return state;
