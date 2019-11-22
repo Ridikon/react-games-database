@@ -1,4 +1,4 @@
-import { FETCH_PLATFORMS } from '../../constants/platformsConstants';
+import { FETCH_PLATFORMS, SET_PLATFORMS_RANGE } from '../../constants/platformsConstants';
 import { loadingEnd, loadingStart } from '../loadingActions';
 import API from '../../api';
 
@@ -6,6 +6,13 @@ export const fetchPlatformsAction = (data) => {
   return {
     type: FETCH_PLATFORMS,
     payload: data
+  }
+};
+
+export const setPlatformsRangeAction = (range) => {
+  return {
+    type: SET_PLATFORMS_RANGE,
+    payload: range
   }
 };
 

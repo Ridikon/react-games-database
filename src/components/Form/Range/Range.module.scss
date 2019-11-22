@@ -1,21 +1,26 @@
-.Range {
+.range {
   margin-bottom: 15px;
+  display: flex;
 
-  label {
-    margin-bottom: 3px;
-    padding: 0;
-    display: block;
-    font-weight: bold;
-  }
+  &Item {
+    flex-grow: 1;
 
-  input {
-    display: block;
-    box-sizing: border-box;
-    border: 1px solid #bebebe;
-    padding: 7px;
-    margin: 0 0 5px;
-    width: 100%;
-    outline: none;
-    transition: all 300ms ease-in-out;
+    label {
+      margin-bottom: 3px;
+      padding: 0;
+      display: block;
+      font-weight: bold;
+    }
+
+    input {
+      display: block;
+      box-sizing: border-box;
+      border: 1px solid #bebebe;
+      padding: 7px;
+      margin: 0 0 5px;
+      width: 100%;
+      outline: none;
+      transition: all 300ms ease-in-out;
+    }
   }
 }

@@ -1,7 +1,8 @@
-import { FETCH_PLATFORMS } from '../../constants/platformsConstants';
+import { FETCH_PLATFORMS, SET_PLATFORMS_RANGE } from '../../constants/platformsConstants';
 
 let initialState = {
-  platforms: {}
+  platforms: {},
+  platformsRange: {}
 };
 
 export const platformsReducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ export const platformsReducer = (state = initialState, action) => {
       return {
         ...state,
         platforms: action.payload
+      };
+    case SET_PLATFORMS_RANGE:
+      return {
+        ...state,
+        platformsRange: action.payload
       };
     default:
       return state;

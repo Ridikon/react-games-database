@@ -1,4 +1,4 @@
-import { FETCH_GAMES } from '../../constants/gamesConstants';
+import { FETCH_GAMES, SET_GAMES_RANGE } from '../../constants/gamesConstants';
 import { loadingEnd, loadingStart } from '../loadingActions';
 import API from '../../api';
 
@@ -6,6 +6,13 @@ export const fetchGamesAction = (data) => {
   return {
     type: FETCH_GAMES,
     payload: data
+  }
+};
+
+export const setGamesRangeAction = (range) => {
+  return {
+    type: SET_GAMES_RANGE,
+    payload: range
   }
 };
 

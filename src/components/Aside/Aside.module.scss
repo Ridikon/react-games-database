@@ -1,0 +1,26 @@
+.aside {
+  position: fixed;
+  padding-right: 10px;
+  top: 0;
+  right: calc(100% - 10px);
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+  height: 100%;
+  z-index: 1;
+
+  &.visible {
+    background: #bfb5bc;
+    left: 0;
+
+    .toggleBtn {
+      left: 350px;
+    }
+  }
+
+  .toggleBtn {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+  }
+}

@@ -1,7 +1,8 @@
-import { FILTER_RESET, SORT_ASC, SORT_DESC } from '../../constants/filterConstants';
+import { FILTER_RESET, SORT_ASC, SORT_DESC, SORT_RANGE } from '../../constants/filterConstants';
 
 let initialState = {
-  sort: ''
+  sortedAt: '',
+  range: []
 };
 
 export const filterReducer = (state = initialState, action) => {
@@ -9,16 +10,22 @@ export const filterReducer = (state = initialState, action) => {
     case SORT_ASC:
       return {
         ...state,
-        sort: 'asc'
+        sortedAt: 'asc'
       };
     case SORT_DESC:
       return {
         ...state,
-        sort: 'desc'
+        sortedAt: 'desc'
+      };
+    case SORT_RANGE:
+      return {
+        ...state,
+        range: action.payload
       };
     case FILTER_RESET:
       return {
-        state: initialState,
+        ...state,
+        sortedAt: initialState.sortedAt
       };
     default:
       return state;
