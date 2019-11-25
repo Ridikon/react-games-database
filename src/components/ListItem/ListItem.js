@@ -3,8 +3,9 @@ import React from 'react';
 import classes from './ListItem.module.scss';
 import ElementPosition from '../../hoc/ElementPosition';
 import Button from '../UI/Button';
+import { NavLink } from 'react-router-dom';
 
-const ListItem = ({ item }) => {
+const ListItem = ({ item, category }) => {
   const renderInfo = (info) => {
     return (
       <div className={classes.info}>
@@ -25,7 +26,7 @@ const ListItem = ({ item }) => {
     return null;
   };
 
-  const itemDedcription = () => {
+  const itemDescription = () => {
     return (
       item.released ?
         <div>
@@ -47,15 +48,18 @@ const ListItem = ({ item }) => {
         <div>
           <span>{item.name}</span>
 
-          {itemDedcription()}
+          {itemDescription()}
         </div>
       </div>
 
 
       <ElementPosition hEnd={true}>
-        <Button size="small">
-          View
-        </Button>
+        <NavLink to={`/view/${category}/${item.id}`}>
+          <Button size="small">
+            View
+          </Button>
+        </NavLink>
+
       </ElementPosition>
     </div>
   );

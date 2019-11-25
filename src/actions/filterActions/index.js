@@ -1,4 +1,11 @@
-import { FILTER_RESET, SORT_ASC, SORT_DESC, SORT_RANGE } from '../../constants/filterConstants';
+import {
+  FILTER_RESET,
+  QUERY_SEARCH,
+  SORT_ASC,
+  SORT_DESC,
+  SORT_RANGE,
+  SORT_RESET
+} from '../../constants/filterConstants';
 
 export const sortAscAction = () => {
   return {
@@ -12,9 +19,9 @@ export const sortDescAction = () => {
   }
 };
 
-export const filterResetAction = () => {
+export const sortResetAction = () => {
   return {
-    type: FILTER_RESET
+    type: SORT_RESET
   }
 };
 
@@ -22,6 +29,19 @@ export const sortRangeAction = (value) => {
   return {
     type: SORT_RANGE,
     payload: value
+  }
+};
+
+export const querySearchAction = (value) => {
+  return {
+    type: QUERY_SEARCH,
+    payload: value
+  }
+};
+
+export const filterResetAction = () => {
+  return {
+    type: FILTER_RESET
   }
 };
 
@@ -34,6 +54,6 @@ export const sortingAction = (value) => (dispatch) => {
       dispatch(sortDescAction());
       break;
     default:
-      dispatch(filterResetAction());
+      dispatch(sortResetAction());
   }
 };
