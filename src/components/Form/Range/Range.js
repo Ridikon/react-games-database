@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import classes from './Range.module.scss'
+import Button from '../../UI/Button';
 
 const Range = ({ label, min, max, step, rangeValue }) => {
   const [minValue, setMinValue] = useState(min);
   const [maxValue, setMaxValue] = useState(max);
 
   const htmlFor = `${label}-${Math.random()}`;
-  const getRange = _.debounce(() => rangeValue([minValue, maxValue]), 1500);
-  const getToFixedNum = () => ((+step ^ 0) === +step) ? 0 : 2;
-  const prepareValue = (val) => Number(val).toFixed(getToFixedNum()).toString();
 
   useEffect(() => {
     setMinValue(min);
@@ -19,14 +17,16 @@ const Range = ({ label, min, max, step, rangeValue }) => {
   }, [min, max]);
 
   const getMin = (e) => {
-    setMinValue(prepareValue(e.target.value));
-    getRange()
+    setMinValue(e.target.value);
   };
 
   const getMax = (e) => {
-    setMaxValue(prepareValue(e.target.value));
-    getRange()
+    setMaxValue(e.target.value);
   };
+
+  const applyRange = useCallback(() => {
+    rangeValue([minValue, maxValue])
+  }, [minValue, maxValue]);
 
   return (
     <div className={classes.range}>
@@ -54,6 +54,10 @@ const Range = ({ label, min, max, step, rangeValue }) => {
           id={htmlFor}
           onChange={getMax}
         />
+      </div>
+
+      <div>
+        <Button size="small" onClick={applyRange}>Apply</Button>
       </div>
     </div>
   );

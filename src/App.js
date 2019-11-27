@@ -7,12 +7,16 @@ import MainPage from './containers/MainPage';
 import Loader from './components/UI/Loader';
 import Title from './components/Title';
 import './App.scss';
+import ViewPage from './containers/ViewPage';
 
 function App({ loading, title }) {
   let routes = (
     <Switch>
       <Route path="/" exact>
         <MainPage />
+      </Route>
+      <Route path="/view/:category/:id">
+        <ViewPage/>
       </Route>
       <Redirect to="/"/>
     </Switch>

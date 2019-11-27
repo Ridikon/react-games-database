@@ -9,12 +9,13 @@ import List from '../../components/List';
 import { fetchGames } from '../../actions/gamesActions';
 import { fetchPlatforms } from '../../actions/platformsActions';
 import { changeTitleAction } from '../../actions/titleActions';
-import { filterResetAction } from '../../actions/filterActions';
+import { sortResetAction } from '../../actions/filterActions';
 
 import classes from './MainPage.module.scss';
 
 const MainPage = ({
                     sortedAt,
+                    searchText,
                     sortedRange,
                     games,
                     platforms,
@@ -22,7 +23,7 @@ const MainPage = ({
                     fetchGames,
                     fetchPlatforms,
                     changeTitleAction,
-                    filterResetAction
+                    sortResetAction
                   }) => {
   const [categoryList, setCategoryList] = useState([]);
 
@@ -37,18 +38,51 @@ const MainPage = ({
     }
   }, [category]);
 
-  const resetSortingByCategory = useCallback(() => {
+  const sortingCategory = useCallback((data) => {
+    if (!sortedAt) {
+      return data;
+    }
+
+    return _.orderBy(data, [sortingByCategory()], [sortedAt])
+  }, [sortedAt]);
+
+  const getCategoryData = useCallback(() => {
     switch (category) {
       case 'games':
-        setCategoryList(games.results);
-        break;
+        return games.results;
       case 'platforms':
-        setCategoryList(platforms.results);
-        break;
+        return platforms.results;
       default:
-        setCategoryList([])
+        return []
     }
-  }, [category, games, platforms]);
+  }, [category]);
+
+  const setRangeList = useCallback(() => {
+    let min = _.first(sortedRange),
+      max = _.last(sortedRange);
+
+    let rangeList = _.filter(sortingCategory(getCategoryData()), item => {
+      return (item[sortingByCategory()] >= min) && (item[sortingByCategory()] <= max)
+      });
+
+    setCategoryList(rangeList)
+  }, [sortedRange]);
+
+  const setSearchList = () => {
+    if (!searchText) {
+      return setCategoryList(sortingCategory(getCategoryData()));
+    }
+
+    let queryList = _.filter(sortingCategory(getCategoryData()), item => {
+      return item.name.toLowerCase().includes(searchText.toLowerCase())
+    });
+
+    setCategoryList(queryList)
+  };
+
+  useEffect(() => {
+    setSearchList()
+  }, [searchText]);
 
   useEffect(() => {
     if (category === 'games' && _.isEmpty(games)) {
@@ -61,7 +95,7 @@ const MainPage = ({
   }, [category]);
 
   useEffect(() => {
-    filterResetAction();
+    sortResetAction();
 
     switch (category) {
       case 'games':
@@ -76,22 +110,18 @@ const MainPage = ({
         setCategoryList([]);
         changeTitleAction('No data')
     }
-  }, [category, games, platforms]);
+  }, [category]);
 
   useEffect(() => {
     if (!sortedAt) {
-      resetSortingByCategory();
+      setRangeList()
     } else {
-      setCategoryList(_.orderBy(categoryList, [sortingByCategory()], [sortedAt]))
+      setCategoryList(sortingCategory(categoryList))
     }
   }, [sortedAt]);
 
   useEffect(() => {
-    let rangeList = _.filter(categoryList, item => {
-      return item[sortingByCategory()] >= _.first(sortedRange) && item[sortingByCategory()] <= _.last(sortedRange)
-    });
-
-    setCategoryList(rangeList)
+    setRangeList()
   }, [sortedRange]);
 
   return (
@@ -99,7 +129,7 @@ const MainPage = ({
       <Aside/>
 
       <section>
-        <List list={categoryList}/>
+        <List list={categoryList} category={category}/>
       </section>
     </div>
   );
@@ -109,6 +139,7 @@ const mapStateToProps = (store) => {
   return {
     category: store.category.category,
     sortedAt: store.filter.sortedAt,
+    searchText: store.filter.searchText,
     sortedRange: store.filter.range,
     games: store.games.games,
     platforms: store.platforms.platforms
@@ -119,7 +150,7 @@ const mapDispatchToProps = {
   fetchGames,
   fetchPlatforms,
   changeTitleAction,
-  filterResetAction
+  sortResetAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

@@ -3,9 +3,9 @@ import ListItem from '../ListItem';
 
 import classes from './List.module.scss';
 
-const List = ({ list = [] }) => {
+const List = ({ list = [], category }) => {
   const renderList = () => {
-    return list.map(item => <ListItem key={item.id} item={item}/>)
+    return list.map(item => <ListItem category={category} key={item.id} item={item}/>)
   };
 
   return (
