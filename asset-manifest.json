@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/react-games-database/static/css/main.ee839865.chunk.css",
-    "main.js": "/react-games-database/static/js/main.c93254fb.chunk.js",
-    "main.js.map": "/react-games-database/static/js/main.c93254fb.chunk.js.map",
-    "runtime-main.js": "/react-games-database/static/js/runtime-main.240cb498.js",
-    "runtime-main.js.map": "/react-games-database/static/js/runtime-main.240cb498.js.map",
+    "main.css": "/react-games-database/static/css/main.60b1b1c0.chunk.css",
+    "main.js": "/react-games-database/static/js/main.6b1f76ef.chunk.js",
+    "main.js.map": "/react-games-database/static/js/main.6b1f76ef.chunk.js.map",
+    "runtime-main.js": "/react-games-database/static/js/runtime-main.cdd819e7.js",
+    "runtime-main.js.map": "/react-games-database/static/js/runtime-main.cdd819e7.js.map",
     "static/css/2.764ccc25.chunk.css": "/react-games-database/static/css/2.764ccc25.chunk.css",
-    "static/js/2.8462490b.chunk.js": "/react-games-database/static/js/2.8462490b.chunk.js",
-    "static/js/2.8462490b.chunk.js.map": "/react-games-database/static/js/2.8462490b.chunk.js.map",
+    "static/js/2.7f2b3398.chunk.js": "/react-games-database/static/js/2.7f2b3398.chunk.js",
+    "static/js/2.7f2b3398.chunk.js.map": "/react-games-database/static/js/2.7f2b3398.chunk.js.map",
     "index.html": "/react-games-database/index.html",
-    "precache-manifest.9e28b72beed4b6f26d9f1e5c06f7107f.js": "/react-games-database/precache-manifest.9e28b72beed4b6f26d9f1e5c06f7107f.js",
+    "precache-manifest.17ca28167c4264b05c88154fbbfa63e8.js": "/react-games-database/precache-manifest.17ca28167c4264b05c88154fbbfa63e8.js",
     "service-worker.js": "/react-games-database/service-worker.js",
     "static/css/2.764ccc25.chunk.css.map": "/react-games-database/static/css/2.764ccc25.chunk.css.map",
-    "static/css/main.ee839865.chunk.css.map": "/react-games-database/static/css/main.ee839865.chunk.css.map"
+    "static/css/main.60b1b1c0.chunk.css.map": "/react-games-database/static/css/main.60b1b1c0.chunk.css.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.240cb498.js",
+    "static/js/runtime-main.cdd819e7.js",
     "static/css/2.764ccc25.chunk.css",
-    "static/js/2.8462490b.chunk.js",
-    "static/css/main.ee839865.chunk.css",
-    "static/js/main.c93254fb.chunk.js"
+    "static/js/2.7f2b3398.chunk.js",
+    "static/css/main.60b1b1c0.chunk.css",
+    "static/js/main.6b1f76ef.chunk.js"
   ]
 }
