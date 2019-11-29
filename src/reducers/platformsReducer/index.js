@@ -1,7 +1,7 @@
 import { FETCH_PLATFORMS, SET_PLATFORMS_RANGE } from '../../constants/platformsConstants';
 
 let initialState = {
-  platforms: {},
+  platforms: null,
   platformsRange: {}
 };
 

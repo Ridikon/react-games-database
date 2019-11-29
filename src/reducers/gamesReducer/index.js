@@ -1,7 +1,7 @@
 import { FETCH_GAMES, SET_GAMES_RANGE } from '../../constants/gamesConstants';
 
 let initialState = {
-  games: {},
+  games: null,
   gamesRange: {}
 };
 

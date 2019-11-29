@@ -1,30 +1,13 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import * as PropTypes from 'prop-types';
 
-import classes from './ListItem.module.scss';
 import ElementPosition from '../../hoc/ElementPosition';
 import Button from '../UI/Button';
-import { NavLink } from 'react-router-dom';
+import Img from '../Img';
+import classes from './ListItem.module.scss';
 
 const ListItem = ({ item, category }) => {
-  const renderInfo = (info) => {
-    return (
-      <div className={classes.info}>
-        {info}
-      </div>
-    )
-  };
-
-  const itemInfo = () => {
-    if ('rating' in item) {
-      return renderInfo(`Rating: ${item.rating}`);
-    }
-
-    if ('games_count' in item) {
-      return renderInfo(`Games count: ${item.games_count}`);
-    }
-
-    return null;
-  };
 
   const itemDescription = () => {
     return (
@@ -39,23 +22,17 @@ const ListItem = ({ item, category }) => {
   return (
     <div className={classes.listItem}>
       <div>
-        <div className={classes.image}>
-          <img src={item['background_image'] || item['image_background']} alt={item.name}/>
-
-          {itemInfo()}
-        </div>
+        <Img item={item}/>
 
         <div>
           <span>{item.name}</span>
-
           {itemDescription()}
         </div>
       </div>
 
-
       <ElementPosition hEnd={true}>
         <NavLink to={`/view/${category}/${item.id}`}>
-          <Button size="small">
+          <Button size="small" typeColor="success">
             View
           </Button>
         </NavLink>
@@ -64,5 +41,19 @@ const ListItem = ({ item, category }) => {
     </div>
   );
 };
+
+ListItem.defaultProps = {
+  item: {
+    released: '2015-05-18',
+    name: 'name',
+    id: 1
+  },
+  category: PropTypes.string
+};
+
+ListItem.propTypes = {
+  item: PropTypes.object,
+  category: PropTypes.string
+}
 
 export default ListItem;

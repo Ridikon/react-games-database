@@ -1,3 +1,4 @@
+import { batch } from 'react-redux';
 import { FETCH_GAMES, SET_GAMES_RANGE } from '../../constants/gamesConstants';
 import { loadingEnd, loadingStart } from '../loadingActions';
 import API from '../../api';
@@ -16,12 +17,16 @@ export const setGamesRangeAction = (range) => {
   }
 };
 
-export const fetchGames = () => (dispatch) => {
+export const fetchGames = () => (dispatch, getState) => {
+  const state = getState();
+  const { category } = state.category;
   dispatch(loadingStart());
 
-  API.get('games').then(res => {
-    dispatch(loadingEnd());
-    dispatch(fetchGamesAction(res.data))
+  API.get(category).then(res => {
+    batch(() => {
+      dispatch(loadingEnd());
+      dispatch(fetchGamesAction(res.data))
+    });
   }).catch(e => {
     dispatch(loadingEnd());
     console.log(e)
