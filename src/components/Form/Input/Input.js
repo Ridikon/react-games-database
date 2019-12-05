@@ -1,31 +1,17 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import classes from './Input.module.scss';
 
-const Input = ({type, name, label, min, max, step, value, onChange, placeholder}) => {
-    const cls = classNames({
-      [classes.Input]: true,
-    });
-    const htmlFor = `${type}-${Math.random()}`;
+const Input = (props) => {
+  const htmlFor = `${props.type}-${Math.random()}`;
 
-    return (
-        <div className={cls}>
-            <label htmlFor={htmlFor}>{label}</label>
-            <input
-                name={name}
-                id={htmlFor}
-                min={min}
-                max={max}
-                step={step}
-                type={type}
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-            />
-        </div>
-    );
+  return (
+    <div className={classes.Input}>
+      <label htmlFor={htmlFor}>{props.label}</label>
+      <input id={htmlFor} {...props} />
+    </div>
+  );
 };
 
 Input.defaultProps = {
