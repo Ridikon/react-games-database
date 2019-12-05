@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import classes from './Input.module.scss';
 
 const Input = (props) => {
-  const htmlFor = `${props.type}-${Math.random()}`;
-
   return (
     <div className={classes.Input}>
-      <label htmlFor={htmlFor}>{props.label}</label>
-      <input id={htmlFor} {...props} />
+      <label htmlFor={props.name}>{props.label}</label>
+      <input id={props.name} {...props} />
     </div>
   );
 };
@@ -29,11 +27,11 @@ Input.defaultProps = {
 Input.propTypes = {
   type: PropTypes.string,
   name: PropTypes.string,
-  min: PropTypes.string,
-  max: PropTypes.string,
-  step: PropTypes.string,
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   onChange: PropTypes.func,
   placeholder: PropTypes.string
 };

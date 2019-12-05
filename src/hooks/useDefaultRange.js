@@ -9,7 +9,7 @@ export function useDefaultRange() {
   const category = useSelector(({ category }) => category.category);
   const games = useSelector(({ games }) => games.games);
   const platforms = useSelector(({ platforms }) => platforms.platforms);
-  const int = '1', floatInt = '0.01';
+  const int = 1, floatInt = 0.01;
 
   const [defaultRange, setDefaultRange] = useState(null);
 
@@ -21,9 +21,9 @@ export function useDefaultRange() {
     const field = category === 'games' ? 'rating' : 'games_count';
     const data = category === 'games' ? games.results : platforms.results;
 
-    const minRange = get(minBy(data, item => item[field]), field).toString(),
-      maxRange = get(maxBy(data, item => item[field]), field).toString(),
-      step = (minRange ^ 0) === minRange ? int : floatInt;
+    const minRange = get(minBy(data, item => item[field]), field);
+    const maxRange = get(maxBy(data, item => item[field]), field);
+    const step = (minRange ^ 0) === minRange ? int : floatInt;
 
     setDefaultRange({ minRange, maxRange, step });
   };
