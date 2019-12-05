@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import ListItem from '../../components/ListItem';
 import { fetchGames } from '../../actions/gamesActions';
@@ -7,7 +9,6 @@ import { fetchPlatforms } from '../../actions/platformsActions';
 import { changeTitleAction } from '../../actions/titleActions';
 import { useSortedList } from '../../hooks/useSortedList';
 import classes from './List.module.scss';
-import * as PropTypes from 'prop-types';
 
 const List = ({
                 games,
@@ -43,6 +44,12 @@ const List = ({
   };
 
   useEffect(() => {
+    if (!games) {
+      fetchGames();
+    }
+  }, []);
+
+  useEffect(() => {
     if (category === 'platforms' && !platforms) {
       fetchPlatforms();
     }
@@ -52,12 +59,6 @@ const List = ({
       changeTitleAction(getTitle());
     }
   }, [category]);
-
-  useEffect(() => {
-    if (!games) {
-      fetchGames();
-    }
-  }, []);
 
   const renderList = () => (sortedList || categoryList)
     .map(item => <ListItem category={category} key={item.id} item={item}/>);

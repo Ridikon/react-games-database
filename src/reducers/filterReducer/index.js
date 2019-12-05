@@ -9,7 +9,7 @@ import {
 
 let initialState = {
   sortedAt: '',
-  range: {},
+  range: null,
   searchText: ''
 };
 

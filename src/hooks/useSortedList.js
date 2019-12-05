@@ -1,28 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 
 export function useSortedList(categoryList) {
-  const category = useSelector(({ category }) => category.category);
-  const searchText = useSelector(({ filter }) => filter.searchText);
-  const sortedAt = useSelector(({ filter }) => filter.sortedAt);
-  const sortedRange = useSelector(({ filter }) => filter.range, shallowEqual);
   const [sortedList, setSortedList] = useState(null);
 
+  const category = useSelector(({ category }) => category.category);
+  const filter = useSelector(({ filter }) => filter, shallowEqual);
+  const {range, sortedAt, searchText} = filter;
+
   useEffect(() => {
-    if (!searchText && !sortedAt) {
+    if (!searchText && !sortedAt && !range) {
       setSortedList(null);
     }
 
     if (categoryList && categoryList.length) {
       sortData();
     }
-
-  }, [categoryList, searchText, sortedAt, sortedRange]);
+  }, [categoryList, filter]);
 
   const getSortingStr = () => category === 'games' ? 'rating' : 'games_count';
   const isFilteringByText = (text, item) => new RegExp(`${text}`, 'i').test(item.name);
-  const isFilteringByRange = (item) => (item[getSortingStr()] >= sortedRange.minRange) && (item[getSortingStr()] <= sortedRange.maxRange)
+  const isFilteringByRange = (item) => range && (item[getSortingStr()] >= range.minRange) && (item[getSortingStr()] <= range.maxRange);
 
   const sortData = () => {
     const data = categoryList.filter(item => (isFilteringByText(searchText, item) && isFilteringByRange(item)));
