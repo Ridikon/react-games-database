@@ -1,17 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import _ from 'lodash';
+import { batch, connect } from 'react-redux';
+import minBy from 'lodash/minBy';
+import maxBy from 'lodash/maxBy';
+import get from 'lodash/get';
+import * as PropTypes from 'prop-types';
 
 import Select from '../../components/Form/Select';
 import Range from '../../components/Form/Range';
+import Input from '../../components/Form/Input/Input';
+import Button from '../../components/UI/Button';
+
 import { changeCategoryAction } from '../../actions/categoryActions';
 import { filterResetAction, querySearchAction, sortingAction, sortRangeAction } from '../../actions/filterActions';
 import { setGamesRangeAction } from '../../actions/gamesActions';
 import { setPlatformsRangeAction } from '../../actions/platformsActions';
+
 import classes from './Filter.module.scss';
-import Input from '../../components/Form/Input/Input';
-import Button from '../../components/UI/Button';
+import sortingOptions from '../../mocked-data/sortingOptions';
+import categories from '../../mocked-data/categories';
 
 const Filter = ({
                   games,
@@ -31,53 +38,43 @@ const Filter = ({
                 }) => {
   const [rangeValues, setRangeValues] = useState([]);
 
-  const categories = [
-    { text: 'Games', value: 'games' },
-    { text: 'Platforms', value: 'platforms' }
-  ];
-
-  const sortingOptions = [
-    { text: 'ASC', value: 'asc' },
-    { text: 'DESC', value: 'desc' },
-    { text: 'Default', value: '' }
-  ];
-
   useEffect(() => {
-    if (!_.isEmpty(games)) {
+    if (games) {
       setGamesRangeAction(setRange(games.results, 'rating'));
     }
 
-    if (!_.isEmpty(platforms)) {
+    if (platforms) {
       setPlatformsRangeAction(setRange(platforms.results, 'games_count'));
     }
-
   }, [games, platforms]);
 
   useEffect(() => {
     switch (category) {
       case 'games':
         setRangeValues(gamesRange);
+        sortRangeAction(gamesRange);
         break;
       case 'platforms':
         setRangeValues(platformsRange);
+        sortRangeAction(platformsRange);
         break;
       default:
-        return;
+        setRangeValues(gamesRange);
+        sortRangeAction(gamesRange);
     }
   }, [category, gamesRange, platformsRange]);
 
   const setRange = (data, field) => {
-    let minRange = _.get(_.minBy(data, item => item[field]), field).toString(),
-      maxRange = _.get(_.maxBy(data, item => item[field]), field).toString(),
+    let minRange = get(minBy(data, item => item[field]), field).toString(),
+      maxRange = get(maxBy(data, item => item[field]), field).toString(),
       step = (+minRange ^ 0) === +minRange ? '1' : '0.01';
-
-    sortRangeAction([minRange, maxRange]);
 
     return {minRange, maxRange, step}
   };
 
   const getRangeValue = (value) => {
-    sortRangeAction(value)
+    sortRangeAction(value);
+    setRangeValues(value);
   };
 
   const getSearchValue = (e) => {
@@ -85,8 +82,17 @@ const Filter = ({
   };
 
   const filterReset = () => {
-    filterResetAction();
-    sortRangeAction([rangeValues.minRange, rangeValues.maxRange])
+    const range = {
+      minRange: category === 'games' ? gamesRange.minRange : platformsRange.minRange,
+      maxRange: category === 'games' ? gamesRange.maxRange : platformsRange.maxRange,
+      step: category === 'games' ? gamesRange.step : platformsRange.step
+    };
+
+    batch(() => {
+      filterResetAction();
+      sortRangeAction(range);
+      setRangeValues(range);
+    });
   };
 
   const getLabel = () => {
@@ -131,6 +137,40 @@ const mapDispatchToProps = {
   sortRangeAction,
   querySearchAction,
   filterResetAction
+};
+
+Filter.defaultProps = {
+  games: null,
+  platforms: null,
+  gamesRange: null,
+  platformsRange: null,
+  category: '',
+  sortedAt: '',
+  searchText: '',
+  changeCategoryAction: () => null,
+  sortingAction: () => null,
+  setGamesRangeAction: () => null,
+  setPlatformsRangeAction: () => null,
+  sortRangeAction: () => null,
+  querySearchAction: () => null,
+  filterResetAction: () => null,
+};
+
+Filter.propTypes = {
+  category: PropTypes.string,
+  sortedAt: PropTypes.string,
+  searchText: PropTypes.string,
+  games: PropTypes.object,
+  platforms: PropTypes.object,
+  gamesRange: PropTypes.object,
+  platformsRange: PropTypes.object,
+  changeCategoryAction: PropTypes.func,
+  sortingAction: PropTypes.func,
+  setGamesRangeAction: PropTypes.func,
+  setPlatformsRangeAction: PropTypes.func,
+  sortRangeAction: PropTypes.func,
+  querySearchAction: PropTypes.func,
+  filterResetAction: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

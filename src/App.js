@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import MainPage from './containers/MainPage';
+import MainPage from './components/MainPage';
 import Loader from './components/UI/Loader';
 import Title from './components/Title';
 import './App.scss';

@@ -1,0 +1,15 @@
+.screenshotsList {
+  margin: 0 .5rem;
+}
+
+.screenshotsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  &>div {
+    &:not(:last-child) {
+      margin-right: .6rem;
+    }
+  }
+}

@@ -24,9 +24,9 @@ const Range = ({ label, min, max, step, rangeValue }) => {
     setMaxValue(e.target.value);
   };
 
-  const applyRange = useCallback(() => {
-    rangeValue([minValue, maxValue])
-  }, [minValue, maxValue]);
+  const applyRange = () => {
+    rangeValue({minRange: minValue, maxRange: maxValue})
+  };
 
   return (
     <div className={classes.range}>
@@ -57,7 +57,7 @@ const Range = ({ label, min, max, step, rangeValue }) => {
       </div>
 
       <div>
-        <Button size="small" onClick={applyRange}>Apply</Button>
+        <Button typeColor="success" size="small" onClick={applyRange}>Apply</Button>
       </div>
     </div>
   );
