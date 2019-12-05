@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import classes from './Input.module.scss';
 
-const Input = ({type, label, value, onChange, placeholder}) => {
+const Input = ({type, name, label, min, max, step, value, onChange, placeholder}) => {
     const cls = classNames({
       [classes.Input]: true,
     });
@@ -14,7 +14,11 @@ const Input = ({type, label, value, onChange, placeholder}) => {
         <div className={cls}>
             <label htmlFor={htmlFor}>{label}</label>
             <input
+                name={name}
                 id={htmlFor}
+                min={min}
+                max={max}
+                step={step}
                 type={type}
                 value={value}
                 onChange={onChange}
@@ -25,18 +29,26 @@ const Input = ({type, label, value, onChange, placeholder}) => {
 };
 
 Input.defaultProps = {
+  type: 'text',
+  name: '',
+  min: '',
+  max: '',
+  step: '',
   label: 'Label',
   value: '',
   onChange: () => null,
-  type: 'text',
   placeholder: 'type something'
 };
 
 Input.propTypes = {
+  type: PropTypes.string,
+  name: PropTypes.string,
+  min: PropTypes.string,
+  max: PropTypes.string,
+  step: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  type: PropTypes.string,
   placeholder: PropTypes.string
 };
 

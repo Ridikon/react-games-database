@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -40,10 +40,12 @@ const Filter = ({
     <div className={classes.filter}>
       <Select value={category} label="Chose category" onChange={changeCategoryAction} options={categories}/>
       <Select value={sortedAt} label="Sort" onChange={sortingAction} options={sortingOptions}/>
-      <Range />
+      <Range/>
       <Input value={searchText} label="Search" placeholder="Enter the text" onChange={getSearchValue}/>
 
-      <Button typeColor="warning" size="small" onClick={filterReset}>Reset filter</Button>
+      <div className={classes.buttonWrapper}>
+        <Button typeColor="warning" size="small" onClick={filterReset}>Reset filter</Button>
+      </div>
     </div>
   );
 };
@@ -70,7 +72,7 @@ Filter.defaultProps = {
   changeCategoryAction: () => null,
   sortingAction: () => null,
   querySearchAction: () => null,
-  filterResetAction: () => null,
+  filterResetAction: () => null
 };
 
 Filter.propTypes = {
@@ -80,7 +82,7 @@ Filter.propTypes = {
   changeCategoryAction: PropTypes.func,
   sortingAction: PropTypes.func,
   querySearchAction: PropTypes.func,
-  filterResetAction: PropTypes.func,
+  filterResetAction: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
