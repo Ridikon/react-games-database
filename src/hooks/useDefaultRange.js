@@ -13,16 +13,7 @@ export function useDefaultRange() {
   const [defaultRange, setDefaultRange] = useState(null);
 
   useEffect(() => {
-    switch (category) {
-      case 'games':
-        games && findRange();
-        break;
-      case 'platforms':
-        platforms && findRange();
-        break;
-      default:
-        break
-    }
+    if (games || platforms) findRange();
   }, [category]);
 
   const findRange = () => {
