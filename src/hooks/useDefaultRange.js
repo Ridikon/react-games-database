@@ -20,9 +20,9 @@ export function useDefaultRange() {
     const field = category === 'games' ? 'rating' : 'games_count';
     const data = category === 'games' ? games.results : platforms.results;
 
-    let minRange = get(minBy(data, item => item[field]), field).toString(),
+    const minRange = get(minBy(data, item => item[field]), field).toString(),
       maxRange = get(maxBy(data, item => item[field]), field).toString(),
-      step = (+minRange ^ 0) === +minRange ? '1' : '0.01';
+      step = (minRange ^ 0) === minRange ? '1' : '0.01';
 
     setDefaultRange({ minRange, maxRange, step });
   };
