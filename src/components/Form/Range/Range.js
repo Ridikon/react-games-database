@@ -28,14 +28,8 @@ const Range = ({ category, sortRangeAction, range }) => {
     }
   }, [range]);
 
-  const getMin = (e) => {
-    const minRange = e.target.value;
-    setRangeValues({ ...rangeValues, minRange });
-  };
-
-  const getMax = (e) => {
-    const maxRange = e.target.value;
-    setRangeValues({ ...rangeValues, maxRange });
+  const getValue = ({target: {name, value}}) => {
+    setRangeValues({ ...rangeValues, [name]: value });
   };
 
   const applyRange = () => {
@@ -49,26 +43,28 @@ const Range = ({ category, sortRangeAction, range }) => {
           <div className={classes.rangeItem}>
             <label htmlFor={htmlFor}>Min {category}</label>
             <input
+              name="minRange"
               value={rangeValues.minRange}
               min={defaultRange.minRange}
               max={defaultRange.maxRange}
               step={defaultRange.step}
               type="number"
               id={htmlFor}
-              onChange={getMin}
+              onChange={getValue}
             />
           </div>
 
           <div className={classes.rangeItem}>
             <label htmlFor={htmlFor}>Max {category}</label>
             <input
+              name="maxRange"
               value={rangeValues.maxRange}
               min={defaultRange.minRange}
               max={defaultRange.maxRange}
               step={defaultRange.step}
               type="number"
               id={htmlFor}
-              onChange={getMax}
+              onChange={getValue}
             />
           </div>
 
