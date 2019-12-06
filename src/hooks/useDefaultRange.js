@@ -16,14 +16,18 @@ export function useDefaultRange() {
   const [rangeValues, setRangeValues] = useState(null);
   const [defaultRange, setDefaultRange] = useState(null);
 
-  const categoryTitle = useSelector(({ category }) => category.categoryTitle);
-  const gamesData = useSelector(({ games }) => games.gamesData);
+  const category = useSelector(({ category }) => category);
   const range = useSelector(({ filter }) => filter.range);
-  const platformsData = useSelector(({ platforms }) => platforms.platformsData);
-
+  const {categoryTitle, categoryData} = category;
   const dispatch  = useDispatch();
-
   const int = 1, floatInt = 0.01;
+
+  useEffect(() => {
+    if (defaultRange) {
+      setRangeValues(defaultRange);
+      dispatch(sortRangeAction(defaultRange));
+    }
+  }, [defaultRange]);
 
   useEffect(() => {
     if (!range) {
@@ -32,20 +36,13 @@ export function useDefaultRange() {
     }
   }, [range]);
 
-  // useEffect(() => {
-  //   if (!range) {
-  //     setRangeValues(defaultRange);
-  //     dispatch(sortRangeAction(defaultRange));
-  //   }
-  // }, [range]);
-
   useEffect(() => {
-    if (gamesData || platformsData) findRange();
+    if (categoryData) findRange();
   }, [categoryTitle]);
 
   const findRange = () => {
     const field = getRangeName(categoryTitle);
-    const data = categoryTitle === gamesCategory ? gamesData.results : platformsData.results;
+    const data = categoryTitle === gamesCategory ? categoryData.results : categoryData.results;
 
     const minRange = get(minBy(data, item => item[field]), field);
     const maxRange = get(maxBy(data, item => item[field]), field);

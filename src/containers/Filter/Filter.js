@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { batch, connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Select from '../../components/Form/Select';
@@ -8,7 +8,7 @@ import Range from '../../components/Form/Range';
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/UI/Button';
 
-import { changeCategoryAction } from '../../actions/categoryActions';
+import { changeCategoryAction, fetchData } from '../../actions/categoryActions';
 import { filterResetAction, querySearchAction, sortingAction } from '../../actions/filterActions';
 
 import classes from './Filter.module.scss';
@@ -22,7 +22,8 @@ const Filter = ({
                   changeCategoryAction,
                   sortingAction,
                   querySearchAction,
-                  filterResetAction
+                  filterResetAction,
+                  fetchData
                 }) => {
   useEffect(() => {
     querySearchAction('')
@@ -36,9 +37,16 @@ const Filter = ({
     filterResetAction();
   };
 
+  const changeCategory = (value) => {
+    batch(() => {
+      changeCategoryAction(value);
+      fetchData()
+    })
+  };
+
   return (
     <div className={classes.filter}>
-      <Select value={categoryTitle} label="Chose category" onChange={changeCategoryAction} options={categories}/>
+      <Select value={categoryTitle} label="Chose category" onChange={changeCategory} options={categories}/>
       <Select value={sortedAt} label="Sort" onChange={sortingAction} options={sortingOptions}/>
       <Range/>
       <Input value={searchText} label="Search" placeholder="Enter the text" onChange={getSearchValue}/>
@@ -60,7 +68,8 @@ const mapDispatchToProps = {
   changeCategoryAction,
   sortingAction,
   querySearchAction,
-  filterResetAction
+  filterResetAction,
+  fetchData
 };
 
 Filter.defaultProps = {
@@ -70,7 +79,8 @@ Filter.defaultProps = {
   changeCategoryAction: () => null,
   sortingAction: () => null,
   querySearchAction: () => null,
-  filterResetAction: () => null
+  filterResetAction: () => null,
+  fetchData: () => null
 };
 
 Filter.propTypes = {
@@ -80,7 +90,8 @@ Filter.propTypes = {
   changeCategoryAction: PropTypes.func,
   sortingAction: PropTypes.func,
   querySearchAction: PropTypes.func,
-  filterResetAction: PropTypes.func
+  filterResetAction: PropTypes.func,
+  fetchData: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

@@ -17,7 +17,7 @@ function DescriptionList({ item, title }) {
   return (
     <div className={classes.itemDescription}>
       <h3>{title}</h3>
-      {renderDescription()}
+      {item.length && renderDescription()}
     </div>
   )
 }
