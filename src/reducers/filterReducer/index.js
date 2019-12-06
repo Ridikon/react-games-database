@@ -5,15 +5,15 @@ import {
   SORT_DESC,
   SORT_RANGE,
   SORT_RESET
-} from '../../constants/filterConstants';
+} from '../../action-types/filterConstants';
 
-let initialState = {
+const initialState = {
   sortedAt: '',
   range: null,
   searchText: ''
 };
 
-export const filterReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case SORT_ASC:
       return {

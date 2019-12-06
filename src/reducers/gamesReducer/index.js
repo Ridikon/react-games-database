@@ -1,21 +1,15 @@
-import { FETCH_GAMES, SET_GAMES_RANGE } from '../../constants/gamesConstants';
+import { FETCH_GAMES } from '../../action-types/gamesConstants';
 
-let initialState = {
-  games: null,
-  gamesRange: {}
+const initialState = {
+  gamesData: null
 };
 
-export const gamesReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_GAMES:
       return {
         ...state,
-        games: action.payload
-      };
-    case SET_GAMES_RANGE:
-      return {
-        ...state,
-        gamesRange: action.payload
+        gamesData: action.payload
       };
     default:
       return state;

@@ -15,20 +15,25 @@ import Img from '../../components/Img';
 import Button from '../../components/UI/Button';
 import GamesDescription from '../../components/GamesDescription';
 import PlatformsDescription from '../../components/PlatformsDescription';
+import { changeCategoryAction } from '../../actions/categoryActions';
 
+import { constCategories } from '../../constants/categories-constants';
 import classes from './ViewPage.module.scss';
 
+const { gamesCategory, platformsCategory } = constCategories;
 
-const ViewPage = ({ games, platforms, fetchGames, fetchPlatforms, changeTitleAction }) => {
+const ViewPage = ({ gamesData, platformsData, fetchGames, fetchPlatforms, changeTitleAction, changeCategoryAction }) => {
   const [viewItem, setViewItem] = useState(null);
   const { category, id } = useParams();
 
+  const findItem = (data) => find(get(data, 'results'), item => +item.id === +id);
+
   const getCategoryItem = () => {
     switch (category) {
-      case 'games':
-        return findItem(games);
-      case 'platforms':
-        return findItem(platforms);
+      case gamesCategory:
+        return findItem(gamesData);
+      case platformsCategory:
+        return findItem(platformsData);
       default:
         return {}
     }
@@ -36,21 +41,19 @@ const ViewPage = ({ games, platforms, fetchGames, fetchPlatforms, changeTitleAct
   
   const renderDescriptionByCategory = () => {
     switch (category) {
-      case 'games':
+      case gamesCategory:
         return <GamesDescription item={viewItem}/>;
-      case 'platforms':
+      case platformsCategory:
         return <PlatformsDescription item={viewItem}/>;
       default:
         return <div>No Data</div>
     }
   };
 
-  const findItem = (data) => find(get(data, 'results'), item => +item.id === +id);
-
   useEffect(() => {
     let item = getCategoryItem();
     setViewItem(item);
-  }, [games, platforms]);
+  }, [gamesData, platformsData]);
 
   useEffect(() => {
     if (viewItem) {
@@ -59,13 +62,15 @@ const ViewPage = ({ games, platforms, fetchGames, fetchPlatforms, changeTitleAct
   }, [viewItem]);
 
   useEffect(() => {
-    if (category === 'games' && !games) {
+    if (category === constCategories.gamesCategory && !gamesData) {
       fetchGames();
     }
 
-    if (category === 'platforms' && !platforms) {
+    if (category === constCategories.platformsCategory && !platformsData) {
       fetchPlatforms();
     }
+
+    changeCategoryAction(category);
   }, []);
 
   return (
@@ -86,33 +91,34 @@ const ViewPage = ({ games, platforms, fetchGames, fetchPlatforms, changeTitleAct
   );
 };
 
-const mapStateToProps = (store) => {
-  return {
-    games: store.games.games,
-    platforms: store.platforms.platforms
-  }
-};
+const mapStateToProps = (store) => ({
+  gamesData: store.games.gamesData,
+  platformsData: store.platforms.platformsData
+});
 
 const mapDispatchToProps = {
   fetchGames,
   fetchPlatforms,
-  changeTitleAction
+  changeTitleAction,
+  changeCategoryAction
 };
 
 ViewPage.defaultProps = {
-  games: null,
-  platforms: null,
+  gamesData: null,
+  platformsData: null,
   fetchGames: () => null,
   fetchPlatforms: () => null,
   changeTitleAction: () => null,
+  changeCategoryAction: () => null
 };
 
 ViewPage.propTypes = {
-  games: PropTypes.object,
-  platforms: PropTypes.object,
+  gamesData: PropTypes.object,
+  platformsData: PropTypes.object,
   fetchGames: PropTypes.func,
   fetchPlatforms: PropTypes.func,
   changeTitleAction: PropTypes.func,
+  changeCategoryAction: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewPage);

@@ -8,12 +8,16 @@ import { fetchGames } from '../../actions/gamesActions';
 import { fetchPlatforms } from '../../actions/platformsActions';
 import { changeTitleAction } from '../../actions/titleActions';
 import { useSortedList } from '../../hooks/useSortedList';
+
+import { constCategories } from '../../constants/categories-constants';
 import classes from './List.module.scss';
 
+const { gamesCategory, platformsCategory } = constCategories;
+
 const List = ({
-                games,
-                platforms,
-                category,
+                gamesData,
+                platformsData,
+                categoryTitle,
                 fetchGames,
                 fetchPlatforms,
                 changeTitleAction
@@ -22,46 +26,46 @@ const List = ({
   const { sortedList } = useSortedList(categoryList);
 
   const getCategoryData = () => {
-    switch (category) {
-      case 'games':
-        return games ? games.results : [];
-      case 'platforms':
-        return platforms ? platforms.results : [];
+    switch (categoryTitle) {
+      case gamesCategory:
+        return gamesData ? gamesData.results : [];
+      case platformsCategory:
+        return platformsData ? platformsData.results : [];
       default:
         return [];
     }
   };
 
   const getTitle = () => {
-    switch (category) {
-      case 'games':
-        return 'All games';
-      case 'platforms':
-        return 'All platforms';
+    switch (categoryTitle) {
+      case gamesCategory:
+        return gamesData && gamesData.seo_title;
+      case platformsCategory:
+        return platformsData && (platformsData.seo_title || 'All platforms');
       default:
         return 'No data';
     }
   };
 
   useEffect(() => {
-    if (!games) {
+    if (!gamesData) {
       fetchGames();
     }
   }, []);
 
   useEffect(() => {
-    if (category === 'platforms' && !platforms) {
+    if (categoryTitle === platformsCategory && !platformsData) {
       fetchPlatforms();
     }
 
-    if (category) {
+    if (categoryTitle) {
       setCategoryList(getCategoryData());
       changeTitleAction(getTitle());
     }
-  }, [category]);
+  }, [categoryTitle]);
 
   const renderList = () => (sortedList || categoryList)
-    .map(item => <ListItem category={category} key={item.id} item={item}/>);
+    .map(item => <ListItem category={categoryTitle} key={item.id} item={item}/>);
 
   return (
     <div>
@@ -72,13 +76,11 @@ const List = ({
   );
 };
 
-const mapStateToProps = (store) => {
-  return {
-    category: store.category.category,
-    games: store.games.games,
-    platforms: store.platforms.platforms
-  }
-};
+const mapStateToProps = (store) => ({
+  categoryTitle: store.category.categoryTitle,
+  gamesData: store.games.gamesData,
+  platformsData: store.platforms.platformsData
+});
 
 const mapDispatchToProps = {
   fetchGames,
@@ -87,21 +89,21 @@ const mapDispatchToProps = {
 };
 
 List.defaultProps = {
-  games: null,
-  platforms: null,
-  category: '',
+  gamesData: null,
+  platformsData: null,
+  categoryTitle: '',
   fetchGames: () => null,
   fetchPlatforms: () => null,
-  changeTitleAction: () => null,
+  changeTitleAction: () => null
 };
 
 List.propTypes = {
-  games: PropTypes.object,
-  platforms: PropTypes.object,
-  category: PropTypes.string,
+  gamesData: PropTypes.object,
+  platformsData: PropTypes.object,
+  categoryTitle: PropTypes.string,
   fetchGames: PropTypes.func,
   fetchPlatforms: PropTypes.func,
-  changeTitleAction: PropTypes.func,
+  changeTitleAction: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

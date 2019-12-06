@@ -1,4 +1,4 @@
-import { LOADING_END, LOADING_START } from '../../constants/loadingConstants';
+import { LOADING_END, LOADING_START } from '../../action-types/loadingConstants';
 
 export const loadingStart = () => {
   return {

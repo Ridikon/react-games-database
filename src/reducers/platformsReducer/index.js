@@ -1,21 +1,15 @@
-import { FETCH_PLATFORMS, SET_PLATFORMS_RANGE } from '../../constants/platformsConstants';
+import { FETCH_PLATFORMS } from '../../action-types/platformsConstants';
 
-let initialState = {
-  platforms: null,
-  platformsRange: {}
+const initialState = {
+  platformsData: null
 };
 
-export const platformsReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PLATFORMS:
       return {
         ...state,
-        platforms: action.payload
-      };
-    case SET_PLATFORMS_RANGE:
-      return {
-        ...state,
-        platformsRange: action.payload
+        platformsData: action.payload
       };
     default:
       return state;

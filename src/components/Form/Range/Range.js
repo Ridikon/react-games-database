@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -7,29 +7,16 @@ import Button from '../../UI/Button';
 import Input from '../Input/Input';
 import { sortRangeAction } from '../../../actions/filterActions';
 import { useDefaultRange } from '../../../hooks/useDefaultRange';
+import { getRangeName } from '../../../helpers/getRangeName';
 
+import { constCategories } from '../../../constants/categories-constants';
 import classes from './Range.module.scss'
 
-const Range = ({ category, sortRangeAction, range }) => {
-  const defaultRange = useDefaultRange();
-  const [rangeValues, setRangeValues] = useState(null);
-  const rangeName = category === 'games' ? 'rating' : 'games count';
+const Range = ({ categoryTitle, sortRangeAction }) => {
+  const { defaultRange, rangeValues, setRangeValues } = useDefaultRange();
+  const rangeName = getRangeName(categoryTitle);
 
-  useEffect(() => {
-    if (defaultRange) {
-      setRangeValues(defaultRange);
-      sortRangeAction(defaultRange);
-    }
-  }, [defaultRange]);
-
-  useEffect(() => {
-    if (!range) {
-      setRangeValues(defaultRange);
-      sortRangeAction(defaultRange);
-    }
-  }, [range]);
-
-  const getValue = ({ target: { name, value } }) => {
+  const handleRangeChange = ({ target: { name, value } }) => {
     setRangeValues({ ...rangeValues, [name]: value });
   };
 
@@ -50,7 +37,7 @@ const Range = ({ category, sortRangeAction, range }) => {
               max={defaultRange.maxRange}
               step={defaultRange.step}
               type="number"
-              onChange={getValue}
+              onChange={handleRangeChange}
             />
           </div>
 
@@ -63,7 +50,7 @@ const Range = ({ category, sortRangeAction, range }) => {
               max={defaultRange.maxRange}
               step={defaultRange.step}
               type="number"
-              onChange={getValue}
+              onChange={handleRangeChange}
             />
           </div>
 
@@ -74,24 +61,21 @@ const Range = ({ category, sortRangeAction, range }) => {
   );
 };
 
-const mapStateToProps = (store) => {
-  return {
-    category: store.category.category,
-    range: store.filter.range
-  }
-};
+const mapStateToProps = (store) => ({
+  categoryTitle: store.category.categoryTitle
+});
 
 const mapDispatchToProps = {
   sortRangeAction
 };
 
 Range.defaultProps = {
-  category: 'games',
+  categoryTitle: constCategories.gamesCategory,
   sortRangeAction: () => null
 };
 
 Range.propTypes = {
-  category: PropTypes.string,
+  categoryTitle: PropTypes.string,
   sortRangeAction: PropTypes.func
 };
 

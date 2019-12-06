@@ -1,7 +1,6 @@
-import { batch } from 'react-redux';
-import { FETCH_GAMES, SET_GAMES_RANGE } from '../../constants/gamesConstants';
-import { loadingEnd, loadingStart } from '../loadingActions';
-import API from '../../api';
+import { FETCH_GAMES } from '../../action-types/gamesConstants';
+import { constCategories } from '../../constants/categories-constants';
+import { fetchDataThunk } from '../../thunks/fetchDataThunk';
 
 export const fetchGamesAction = (data) => {
   return {
@@ -10,25 +9,4 @@ export const fetchGamesAction = (data) => {
   }
 };
 
-export const setGamesRangeAction = (range) => {
-  return {
-    type: SET_GAMES_RANGE,
-    payload: range
-  }
-};
-
-export const fetchGames = () => (dispatch, getState) => {
-  const state = getState();
-  const { category } = state.category;
-  dispatch(loadingStart());
-
-  API.get(category).then(res => {
-    batch(() => {
-      dispatch(loadingEnd());
-      dispatch(fetchGamesAction(res.data))
-    });
-  }).catch(e => {
-    dispatch(loadingEnd());
-    console.log(e)
-  });
-};
+export const fetchGames = () => (dispatch) => fetchDataThunk(dispatch, constCategories.gamesCategory, fetchGamesAction);

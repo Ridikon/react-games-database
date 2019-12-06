@@ -1,11 +1,10 @@
-import { LOADING_END, LOADING_START } from '../../constants/loadingConstants';
+import { LOADING_END, LOADING_START } from '../../action-types/loadingConstants';
 
-
-let initialState = {
+const initialState = {
   loading: false
 };
 
-export const loadingReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case LOADING_START:
       return {

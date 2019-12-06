@@ -1,15 +1,22 @@
-import { SELECT_CATEGORY } from '../../constants/categoryConstants';
+import { SELECT_CATEGORY, SET_CATEGORY_DATA } from '../../action-types/categoryConstants';
+import { constCategories } from '../../constants/categories-constants';
 
-let initialState = {
-  category: 'games'
+const initialState = {
+  categoryTitle: constCategories.gamesCategory,
+  categoryData: null
 };
 
-export const categoryReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case SELECT_CATEGORY:
       return {
         ...state,
-        category: action.payload
+        categoryTitle: action.payload
+      };
+    case SET_CATEGORY_DATA:
+      return {
+        ...state,
+        categoryData: action.payload
       };
     default:
       return state;

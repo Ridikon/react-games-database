@@ -2,7 +2,10 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { constRange } from '../../constants/range-constants';
 import classes from './Img.module.scss';
+
+const {rating, gamesCount} = constRange;
 
 function Img({ item, src, small }) {
   const cls = classNames({
@@ -12,11 +15,11 @@ function Img({ item, src, small }) {
   });
 
   const itemInfo = () => {
-    if ('rating' in item) {
+    if (rating in item) {
       return renderInfo(`Rating: ${item.rating}`);
     }
 
-    if ('games_count' in item) {
+    if (gamesCount in item) {
       return renderInfo(`Games count: ${item.games_count}`);
     }
 
@@ -34,13 +37,13 @@ function Img({ item, src, small }) {
   return (
     <>
       { item ?
-        <div className={cls}>
+        (<div className={cls}>
           <img src={item['background_image'] || item['image_background']} alt={item.alt}/>
           {itemInfo()}
-        </div> :
-        <div className={cls}>
+        </div>) :
+        (<div className={cls}>
           <img src={src} alt="img"/>
-        </div>
+        </div>)
       }
     </>
   );

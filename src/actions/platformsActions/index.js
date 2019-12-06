@@ -1,7 +1,6 @@
-import { batch } from 'react-redux';
-import { FETCH_PLATFORMS, SET_PLATFORMS_RANGE } from '../../constants/platformsConstants';
-import { loadingEnd, loadingStart } from '../loadingActions';
-import API from '../../api';
+import { FETCH_PLATFORMS } from '../../action-types/platformsConstants';
+import { constCategories } from '../../constants/categories-constants';
+import { fetchDataThunk } from '../../thunks/fetchDataThunk';
 
 export const fetchPlatformsAction = (data) => {
   return {
@@ -10,23 +9,4 @@ export const fetchPlatformsAction = (data) => {
   }
 };
 
-export const setPlatformsRangeAction = (range) => {
-  return {
-    type: SET_PLATFORMS_RANGE,
-    payload: range
-  }
-};
-
-export const fetchPlatforms = () => (dispatch) => {
-  dispatch(loadingStart());
-
-  API.get('platforms').then(res => {
-    batch(() => {
-      dispatch(loadingEnd());
-      dispatch(fetchPlatformsAction(res.data))
-    })
-  }).catch(e => {
-    dispatch(loadingEnd());
-    console.log(e)
-  });
-};
+export const fetchPlatforms = () => (dispatch) => fetchDataThunk(dispatch, constCategories.platformsCategory, fetchPlatformsAction);

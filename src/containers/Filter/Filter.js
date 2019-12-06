@@ -16,7 +16,7 @@ import sortingOptions from '../../mocked-data/sortingOptions';
 import categories from '../../mocked-data/categories';
 
 const Filter = ({
-                  category,
+                  categoryTitle,
                   sortedAt,
                   searchText,
                   changeCategoryAction,
@@ -26,7 +26,7 @@ const Filter = ({
                 }) => {
   useEffect(() => {
     querySearchAction('')
-  }, [category]);
+  }, [categoryTitle]);
 
   const getSearchValue = (e) => {
     querySearchAction(e.target.value)
@@ -38,7 +38,7 @@ const Filter = ({
 
   return (
     <div className={classes.filter}>
-      <Select value={category} label="Chose category" onChange={changeCategoryAction} options={categories}/>
+      <Select value={categoryTitle} label="Chose category" onChange={changeCategoryAction} options={categories}/>
       <Select value={sortedAt} label="Sort" onChange={sortingAction} options={sortingOptions}/>
       <Range/>
       <Input value={searchText} label="Search" placeholder="Enter the text" onChange={getSearchValue}/>
@@ -50,13 +50,11 @@ const Filter = ({
   );
 };
 
-const mapStateToProps = (store) => {
-  return {
-    category: store.category.category,
-    sortedAt: store.filter.sortedAt,
-    searchText: store.filter.searchText
-  }
-};
+const mapStateToProps = (store) => ({
+  categoryTitle: store.category.categoryTitle,
+  sortedAt: store.filter.sortedAt,
+  searchText: store.filter.searchText
+});
 
 const mapDispatchToProps = {
   changeCategoryAction,
@@ -66,7 +64,7 @@ const mapDispatchToProps = {
 };
 
 Filter.defaultProps = {
-  category: '',
+  categoryTitle: '',
   sortedAt: '',
   searchText: '',
   changeCategoryAction: () => null,
@@ -76,7 +74,7 @@ Filter.defaultProps = {
 };
 
 Filter.propTypes = {
-  category: PropTypes.string,
+  categoryTitle: PropTypes.string,
   sortedAt: PropTypes.string,
   searchText: PropTypes.string,
   changeCategoryAction: PropTypes.func,
