@@ -5,7 +5,7 @@ import {
   SORT_DESC,
   SORT_RANGE,
   SORT_RESET
-} from '../../constants/filterConstants';
+} from '../../action-types/filterConstants';
 
 export const sortAscAction = () => {
   return {

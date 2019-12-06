@@ -1,10 +1,10 @@
-import { SET_TITLE } from '../../constants/titleConstants';
+import { SET_TITLE } from '../../action-types/titleConstants';
 
-let initialState = {
+const initialState = {
   title: ''
 };
 
-export const titleReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case SET_TITLE:
       return {

@@ -1,82 +1,82 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import classes from './Range.module.scss'
 import Button from '../../UI/Button';
+import Input from '../Input/Input';
+import { sortRangeAction } from '../../../actions/filterActions';
+import { useDefaultRange } from '../../../hooks/useDefaultRange';
+import { getRangeName } from '../../../helpers/getRangeName';
 
-const Range = ({ label, min, max, step, rangeValue }) => {
-  const [minValue, setMinValue] = useState(min);
-  const [maxValue, setMaxValue] = useState(max);
+import { constCategories } from '../../../constants/categories-constants';
+import classes from './Range.module.scss'
 
-  const htmlFor = `${label}-${Math.random()}`;
+const Range = ({ categoryTitle, sortRangeAction }) => {
+  const { defaultRange, rangeValues, setRangeValues } = useDefaultRange();
+  const rangeName = getRangeName(categoryTitle);
 
-  useEffect(() => {
-    setMinValue(min);
-    setMaxValue(max);
-  }, [min, max]);
-
-  const getMin = (e) => {
-    setMinValue(e.target.value);
-  };
-
-  const getMax = (e) => {
-    setMaxValue(e.target.value);
+  const handleRangeChange = ({ target: { name, value } }) => {
+    setRangeValues({ ...rangeValues, [name]: value });
   };
 
   const applyRange = () => {
-    rangeValue({minRange: minValue, maxRange: maxValue})
+    sortRangeAction(rangeValues)
   };
 
   return (
-    <div className={classes.range}>
-      <div className={classes.rangeItem}>
-        <label htmlFor={htmlFor}>Min {label}</label>
-        <input
-          value={minValue}
-          min={min}
-          max={max}
-          step={step}
-          type="number"
-          id={htmlFor}
-          onChange={getMin}
-        />
-      </div>
+    <Fragment>
+      {rangeValues && (
+        <div className={classes.range}>
+          <div className={classes.rangeItem}>
+            <Input
+              label={`Min ${rangeName}`}
+              name="minRange"
+              value={rangeValues.minRange}
+              min={defaultRange.minRange}
+              max={defaultRange.maxRange}
+              step={defaultRange.step}
+              type="number"
+              onChange={handleRangeChange}
+            />
+          </div>
 
-      <div className={classes.rangeItem}>
-        <label htmlFor={htmlFor}>Max {label}</label>
-        <input
-          value={maxValue}
-          min={min}
-          max={max}
-          step={step}
-          type="number"
-          id={htmlFor}
-          onChange={getMax}
-        />
-      </div>
+          <div className={classes.rangeItem}>
+            <Input
+              label={`Max ${rangeName}`}
+              name="maxRange"
+              value={rangeValues.maxRange}
+              min={defaultRange.minRange}
+              max={defaultRange.maxRange}
+              step={defaultRange.step}
+              type="number"
+              onChange={handleRangeChange}
+            />
+          </div>
 
-      <div>
-        <Button typeColor="success" size="small" onClick={applyRange}>Apply</Button>
-      </div>
-    </div>
+          <Button typeColor="success" size="small" onClick={applyRange}>Apply</Button>
+        </div>
+      )}
+    </Fragment>
   );
 };
 
+const mapStateToProps = (store) => ({
+  categoryTitle: store.category.categoryTitle
+});
+
+const mapDispatchToProps = {
+  sortRangeAction
+};
+
 Range.defaultProps = {
-  label: 'Label',
-  rangeValue: () => null,
-  min: '0',
-  max: '11',
-  step: '1'
+  categoryTitle: constCategories.gamesCategory,
+  sortRangeAction: () => null
 };
 
 Range.propTypes = {
-  label: PropTypes.string,
-  rangeValue: PropTypes.func,
-  min: PropTypes.string,
-  max: PropTypes.string,
-  step: PropTypes.string
+  categoryTitle: PropTypes.string,
+  sortRangeAction: PropTypes.func
 };
 
-export default Range;
+export default connect(mapStateToProps, mapDispatchToProps)(Range);

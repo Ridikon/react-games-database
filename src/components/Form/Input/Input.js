@@ -1,42 +1,38 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import classes from './Input.module.scss';
 
-const Input = ({type, label, value, onChange, placeholder}) => {
-    const cls = classNames({
-      [classes.Input]: true,
-    });
-    const htmlFor = `${type}-${Math.random()}`;
-
-    return (
-        <div className={cls}>
-            <label htmlFor={htmlFor}>{label}</label>
-            <input
-                id={htmlFor}
-                type={type}
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-            />
-        </div>
-    );
+const Input = (props) => {
+  return (
+    <div className={classes.Input}>
+      <label htmlFor={props.name}>{props.label}</label>
+      <input id={props.name} {...props} />
+    </div>
+  );
 };
 
 Input.defaultProps = {
+  type: 'text',
+  name: '',
+  min: '',
+  max: '',
+  step: '',
   label: 'Label',
   value: '',
   onChange: () => null,
-  type: 'text',
   placeholder: 'type something'
 };
 
 Input.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
   type: PropTypes.string,
+  name: PropTypes.string,
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  label: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  onChange: PropTypes.func,
   placeholder: PropTypes.string
 };
 
